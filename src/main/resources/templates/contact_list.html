@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <form th:action="@{/contacts}">
+                <div class="col-lg-10">
+                    <input type="text" th:value="${keyword}" name="keyword" class="form-control">
+                </div>
+                <div class="col-lg-10">
+                    <input type="submit" name="searchButton" class="btn-success form-control">
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <h1>List Of Contacts</h1>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Contact Name</th>
+                        <th>Contact Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each = "contact : ${contactList}">
+                        <td th:text = "${contact.contactName}"></td>
+                        <td>
+                            <img th:src="${contact.contactImageUrl}" style="width: 80px; height: 80px; align:center;"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <footer style="font-size: large" class="panel-footer">
+                Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                &nbsp; &nbsp; - &nbsp;
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{'/contacts/' + ${i} + '/' +${#strings.defaultString(keyword,'')}}">[[${i}]]</a>
+                    &nbsp; &nbsp;
+                </span>
+            </footer>
+
+        </div>
+    </div>
+</body>
+</html>

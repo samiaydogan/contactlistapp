@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: contactlist-db
+    environment:
+      - POSTGRES_USER=contactlist
+      - POSTGRES_PASSWORD=contactlist
+
+  app:
+    image: 'docker-spring-boot-kn:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    container_name: contactlist-app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/contactlist
+      - SPRING_DATASOURCE_USERNAME=contactlist
+      - SPRING_DATASOURCE_PASSWORD=contactlist
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
